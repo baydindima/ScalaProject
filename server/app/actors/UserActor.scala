@@ -12,7 +12,7 @@ class UserActor(nick: String, userId: Int, board: ActorRef, out: ActorRef) exten
     board ! Subscribe
     import UserActor._
     val js = Json.obj("type" -> "info", "img" -> userId % AvatarCount)
-    out ! userId
+    out ! js
   }
 
   def receive = LoggingReceive {
