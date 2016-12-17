@@ -1,9 +1,26 @@
-@(message: String)
+@(title: String)
 
-@main("Play with Scala.js") {
-<h2>Play and Scala.js share a same message</h2>
-<ul>
-  <li>Play shouts out: <em>@message</em></li>
-  <li>Scala.js shouts out: <em id="scalajsShoutOut"></em></li>
-</ul>
-}
+<!DOCTYPE html>
+
+
+<html>
+    <head>
+        <title>@title</title>
+    </head>
+    <body  class="bg-primary" >
+        <div class="container ">
+            <div class="row">
+                <form id="startchat" class="form-horizontal" >
+                    <div class="col-xs-8">
+                        <input id="nickname" type="text" class="form-control"
+                        placeholder="please type your nickname" />
+                    </div>
+                    <div class="col-xs-1">
+                        <button type="submit" class="btn btn-default ">
+                            Start chat</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

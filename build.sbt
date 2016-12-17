@@ -1,3 +1,4 @@
+
 name := "ScalaProject"
 
 lazy val scalaV = "2.11.8"
@@ -12,6 +13,7 @@ lazy val server = (project in file("server")).settings(
   mainClass := Some("controllers.Application"),
   compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
   libraryDependencies ++= Seq(
+    ws, // Play's web services module
     "com.vmunier" %% "scalajs-scripts" % "1.0.0"
   )
 ).enablePlugins(PlayScala)
