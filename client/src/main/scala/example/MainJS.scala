@@ -2,7 +2,7 @@ package example
 
 import org.scalajs.dom
 import org.scalajs.dom.MessageEvent
-import org.scalajs.dom.html.Button
+import org.scalajs.dom.html.{Button, Form}
 import org.scalajs.dom.raw.MouseEvent
 import org.scalajs.jquery.{jQuery => $}
 
@@ -38,6 +38,24 @@ object MainJS extends js.JSApp {
                 println(s"message.data = ${message.data}")
             }
         }
+
+        val sendMessageButton = $("#msgform").context.asInstanceOf[Form]
+        sendMessageButton.onclick = {
+          e: MouseEvent =>
+            e.preventDefault()
+            socket.send(js.JSON.stringify(s"{msg: ${$("#msgtext").value()}"))
+            $("#chatAndMessage").append("<div class=\"messageInChat\"><div class=\"messageManager\">"
+              + "<img align='left' src=\"" + "http://" + dom.window.location.hostname +
+              ":" + dom.window.location.port + "/assets/images/" + myAvatarId + ".png" +
+              "\" height=\"20\" width=\"20\" />" + $("#nickname").text() + ":" + $("#msgtext").`val`() + "</div></div>")
+            $.post(
+              "http://" + $("#address").text() + "/message",
+              s"{nickname: ${$("#nickname").text()}, msg: ${$("#msgtext").`val`()}}"
+            )
+            $("#msgtext").`val`("")
+        }
+
+
     }
   }
 }
