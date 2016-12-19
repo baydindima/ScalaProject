@@ -19,12 +19,17 @@ class UserActor(nick: String, userId: Int, board: ActorRef, out: ActorRef) exten
   def receive = LoggingReceive {
     case Message(nickname, id, s) if sender == board =>
       import UserActor._
+      println("User actor message")
+      log.info("User actor message")
       if (nickname != nick) {
         val js = Json.obj("type" -> "message", "nickname" -> nickname, "msg" -> s, "img" -> id % AvatarCount)
         out ! js
       }
     case js: JsValue =>
-      (js \ "msg").validate[String] map {
+      println("User actor js")
+      println(js)
+      log.info("User actor js")
+      (js \ "text").validate[String] map {
         Utility.escape
       } foreach {
         board ! Message(nick, userId, _)

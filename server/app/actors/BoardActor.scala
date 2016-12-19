@@ -9,10 +9,12 @@ class BoardActor extends Actor with ActorLogging {
 
   def receive = LoggingReceive {
     case m: Message =>
+      println(s"Board get $m")
       users foreach { user =>
         user ! m
       }
     case Subscribe =>
+      println(s"Board subscribe")
       users += sender
       context watch sender
     case Terminated(user) =>
