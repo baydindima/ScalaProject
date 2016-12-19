@@ -19,6 +19,16 @@ object MainJS extends js.JSApp {
     elem.show()
   }
 
+  def getImageUrl(imgName: String): String =
+    s"/assets/images/$imgName.png"
+
+  def getImageHtml(srcUrl: String, imgUrl: String): String =
+    "<img align='left' src=\"" +
+      srcUrl +
+      getImageUrl(imgUrl) +
+      "\" height=\"20\" width=\"20\" />"
+
+
   def main(): Unit = {
 
     val $startChatForm = $("#start-chat-form")
@@ -46,10 +56,7 @@ object MainJS extends js.JSApp {
                 println("socket get message type message")
                 $chatAndMessage
                   .append("<div class=\"messageInChat\"><div class=\"messageClient\">"
-                    + "<img align='left' src=\""
-                    + url
-                    + "/assets/images/" + jsMessage.img + ".png"
-                    + "\" height=\"20\" width=\"20\" />" + jsMessage.nickname + ":" + jsMessage.msg + "</div></div>")
+                    + getImageHtml(url, jsMessage.img.toString) + jsMessage.nickname + ":" + jsMessage.msg + "</div></div>")
               case "info" =>
                 println("socket get message type info")
                 myAvatarId = jsMessage.img.toString
@@ -72,9 +79,7 @@ object MainJS extends js.JSApp {
             socket.send(json)
 
             $chatAndMessage.append("<div class=\"messageInChat\"><div class=\"messageManager\">"
-              + "<img align='left' src=\"" + url
-              + "/assets/images/" + myAvatarId + ".png" +
-              "\" height=\"20\" width=\"20\" />" + $("#nickname").text() + ":" + $("#msgtext").`val`() + "</div></div>")
+              + getImageHtml(url, myAvatarId) + nick + ":" + $("#msgtext").`val`() + "</div></div>")
             $("#msgtext").`val`("")
         }
 
