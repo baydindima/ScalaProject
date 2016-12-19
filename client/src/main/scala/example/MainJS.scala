@@ -2,8 +2,8 @@ package example
 
 import org.scalajs.dom
 import org.scalajs.dom.MessageEvent
-import org.scalajs.dom.html.{Button, Form}
-import org.scalajs.dom.raw.{Event, MouseEvent}
+import org.scalajs.dom.html.Form
+import org.scalajs.dom.raw.Event
 import org.scalajs.jquery.{jQuery => $}
 
 import scala.scalajs.js
@@ -13,10 +13,11 @@ object MainJS extends js.JSApp {
 
   def main(): Unit = {
 
-    val button = dom.document.getElementById("start-chat-button").asInstanceOf[Button]
+    val startChatForm = $("#start-chat-form").context.asInstanceOf[Form]
     val url = "http://" + dom.window.location.hostname + ":" + dom.window.location.port
-    button.onclick = {
-      _: MouseEvent =>
+    startChatForm.onsubmit = {
+      e: Event =>
+        e.preventDefault()
         val nick = $("#start-chat-text").`val`().asInstanceOf[String]
         val dataWsUrl = $("body").data("ws-url").asInstanceOf[String]
         val socket = new dom.WebSocket(dataWsUrl + s"?$Nick=$nick")
@@ -42,8 +43,8 @@ object MainJS extends js.JSApp {
             }
         }
 
-        val sendMessageButton = $("#msgform").context.asInstanceOf[Form]
-        sendMessageButton.onsubmit = {
+        val sendMessageForm = $("#msgform").context.asInstanceOf[Form]
+        sendMessageForm.onsubmit = {
           e: Event =>
             println("msg form handler")
             e.preventDefault()
@@ -56,10 +57,6 @@ object MainJS extends js.JSApp {
               + "<img align='left' src=\"" + url
               + "/assets/images/" + myAvatarId + ".png" +
               "\" height=\"20\" width=\"20\" />" + $("#nickname").text() + ":" + $("#msgtext").`val`() + "</div></div>")
-            //            $.post(
-            //              url + "/message",
-            //              s"{nickname: ${$("#nickname").text()}, msg: ${$("#msgtext").`val`()}}"
-            //            )
             $("#msgtext").`val`("")
         }
 
