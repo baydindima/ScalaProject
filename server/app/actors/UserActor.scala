@@ -9,6 +9,7 @@ import scala.xml.Utility
 class UserActor(nick: String, userId: Int, board: ActorRef, out: ActorRef) extends Actor with ActorLogging {
 
   override def preStart() = {
+    println("pre start user actor")
     board ! Subscribe
     import UserActor._
     val js = Json.obj("type" -> "info", "img" -> userId % AvatarCount)
