@@ -1,3 +1,6 @@
+@
+import play.api.mvc.RequestHeader
+
 @(title: String)(implicit request: RequestHeader)
 
 <!DOCTYPE html>
@@ -6,6 +9,7 @@
 <html>
     <head>
         <title>@title</title>
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
     </head>
     <body data-ws-url="@routes.Application.ws().webSocketURL()" class="bg-primary" >
         <div class="container ">

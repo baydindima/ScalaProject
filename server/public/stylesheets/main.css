@@ -1,0 +1,40 @@
+
+body {
+    margin: 50px;
+}
+
+#chatAndMessage {
+    width: 550px;
+    height: 450px;
+    overflow-y: auto;
+    border: 1px solid #dbdbdd;
+    background: #ffffff;
+
+}
+
+.messageInChat {
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.messageClient {
+    max-width: 286px;
+    background: #00a6e8;
+    color: white;
+    left: 10px;
+    width: 80%;
+    float: left;
+    padding: 5px;
+}
+
+.messageManager {
+    max-width: 286px;
+    background: #dedede;
+    color: black;
+    right: 10px;
+    width: 80%;
+    float: right;
+    padding: 5px;
+}
