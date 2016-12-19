@@ -4,21 +4,35 @@ import org.scalajs.dom
 import org.scalajs.dom.MessageEvent
 import org.scalajs.dom.html.Form
 import org.scalajs.dom.raw.Event
-import org.scalajs.jquery.{jQuery => $}
+import org.scalajs.jquery.{JQuery, jQuery => $}
 
 import scala.scalajs.js
 
 object MainJS extends js.JSApp {
   val Nick = "nickname"
 
+  def setInvisible(elem: JQuery): Unit = {
+    elem.hide()
+  }
+
+  def setVisible(elem: JQuery): Unit = {
+    elem.show()
+  }
+
   def main(): Unit = {
 
-    val startChatForm = $("#start-chat-form").context.asInstanceOf[Form]
+    val $startChatForm = $("#start-chat-form")
+    val $chatAndMessage = $("#chatAndMessage")
+
+    setInvisible($chatAndMessage.parent())
+
+    val startChatForm = $startChatForm.context.asInstanceOf[Form]
     val url = "http://" + dom.window.location.hostname + ":" + dom.window.location.port
     startChatForm.onsubmit = {
       e: Event =>
         e.preventDefault()
-        val nick = $("#start-chat-text").`val`().asInstanceOf[String]
+        val $startChatText = $("#start-chat-text")
+        val nick = $startChatText.`val`().asInstanceOf[String]
         val dataWsUrl = $("body").data("ws-url").asInstanceOf[String]
         val socket = new dom.WebSocket(dataWsUrl + s"?$Nick=$nick")
         var myAvatarId = "0"
@@ -30,7 +44,7 @@ object MainJS extends js.JSApp {
             jsMessage.`type`.toString match {
               case "message" =>
                 println("socket get message type message")
-                $("#chatAndMessage")
+                $chatAndMessage
                   .append("<div class=\"messageInChat\"><div class=\"messageClient\">"
                     + "<img align='left' src=\""
                     + url
@@ -43,7 +57,11 @@ object MainJS extends js.JSApp {
             }
         }
 
-        val sendMessageForm = $("#msgform").context.asInstanceOf[Form]
+        setInvisible($startChatForm)
+        setVisible($chatAndMessage.parent())
+
+        val $msgForm = $("#msgform")
+        val sendMessageForm = $msgForm.context.asInstanceOf[Form]
         sendMessageForm.onsubmit = {
           e: Event =>
             println("msg form handler")
@@ -53,7 +71,7 @@ object MainJS extends js.JSApp {
             println(json.toString)
             socket.send(json)
 
-            $("#chatAndMessage").append("<div class=\"messageInChat\"><div class=\"messageManager\">"
+            $chatAndMessage.append("<div class=\"messageInChat\"><div class=\"messageManager\">"
               + "<img align='left' src=\"" + url
               + "/assets/images/" + myAvatarId + ".png" +
               "\" height=\"20\" width=\"20\" />" + $("#nickname").text() + ":" + $("#msgtext").`val`() + "</div></div>")
